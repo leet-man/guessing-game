@@ -1,6 +1,6 @@
 use std::{
     cmp::Ordering,
-    io,
+    io::{self, Write},
 };
 
 use rand::Rng;
@@ -12,7 +12,8 @@ fn main() {
     let mut guesses: u32 = 0;
 
     loop {
-        println!("Please input guess number {}", guesses + 1);
+        print!("Guess #{}: ", guesses + 1);
+        io::stdout().flush().unwrap();
 
         let mut input = String::new();
         io::stdin()
@@ -32,12 +33,11 @@ fn main() {
             continue;
         }
 
-        println!("You guessed: {guess}");
         guesses += 1;
 
         match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
+            Ordering::Less => println!("{guess} — too small!"),
+            Ordering::Greater => println!("{guess} — too big!"),
             Ordering::Equal => {
                 println!("You win! You took {} guesses.", guesses);
                 break;
